@@ -1,18 +1,30 @@
 import jwt from "jsonwebtoken";
 
 const auth = (req, res, next) => {
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(401).json({ message: "Login required" });
-  }
-
   try {
+    const token = req.cookies?.token;
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Please login first",
+      });
+    }
+
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({
+        message: "Server configuration error",
+      });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.id;   // 👈 user id yahin set hoti hai
+
+    req.user = decoded.id;
+
     next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+  } catch (error) {
+    return res.status(401).json({
+      message: "Session expired. Login again",
+    });
   }
 };
 

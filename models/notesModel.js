@@ -5,19 +5,20 @@ const notesSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      
     },
+
     content: {
       type: String,
       required: true,
     },
-    user:{
+
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
-    }
+      required: true,
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Note = mongoose.model("Note", notesSchema);
