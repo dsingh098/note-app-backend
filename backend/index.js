@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 
 import connectDB from "./config/db.js";
 import authRouter from "./routes/userRoutes.js";
@@ -9,6 +10,7 @@ import noteRouter from "./routes/notesRoutes.js";
 dotenv.config();
 
 const app = express();
+app.use(cors())
 const PORT = process.env.PORT || 5000;
 
 // Middleware
