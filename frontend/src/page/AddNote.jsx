@@ -12,7 +12,7 @@ const AddNote = () => {
     const data = { title, description }
 
     try {
-      const res = await axios.post("http://localhost:8000/api/note/", data)
+      const res = await axios.post("http://localhost:8000/api/notes/", data)
 
       console.log(res.data)
       alert("Note added successfully")
