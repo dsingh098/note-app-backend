@@ -39,7 +39,7 @@ const Register = () => {
 
       setSuccess("User registered successfully");
 
-      // optional: reset form
+     
       setName("");
       setUserName("");
       setEmail("");

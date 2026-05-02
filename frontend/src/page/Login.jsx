@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { login } from "../../service/auth.service.js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext"
 
 const Login = () => {
   const navigate = useNavigate();
+  const { handleLogin } = useAuth(); 
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +12,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -23,12 +24,11 @@ const Login = () => {
       setLoading(true);
       setError("");
 
-      await login({ email, password }); // cookie backend set karega
+      await handleLogin({ email, password }); 
 
-      navigate("/home"); // success pe redirect
+      navigate("/home"); // login success
 
     } catch (err) {
-      console.log(err);
       setError("Invalid email or password");
     } finally {
       setLoading(false);
@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <div>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={onSubmit}>
         <h2>Login</h2>
 
         <input
@@ -55,7 +55,10 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type="button" onClick={() => setShowPassword(!showPassword)}>
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+        >
           {showPassword ? "Hide" : "Show"}
         </button>
         <br />
