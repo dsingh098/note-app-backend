@@ -5,6 +5,8 @@ import GetNote from "./page/GetNote.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Login from "./page/Login.jsx";
 import Register from "./page/Register.jsx";
+import { Navigate } from "react-router-dom";
+import Update from "./components/Update.jsx";
 
 function App() {
   return (
@@ -12,19 +14,21 @@ function App() {
       <Navbar />
 
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
         {/* Protected Routes */}
         <Route
-          path="/note"
+          path="/home"
           element={
             <ProtectedRoute>
               <GetNote />
             </ProtectedRoute>
           }
         />
+
 
         <Route
           path="/add-note"
@@ -33,6 +37,15 @@ function App() {
               <AddNote />
             </ProtectedRoute>
           }
+        />
+
+        <Route 
+        path = "/edit/:id"
+        element={
+          <ProtectedRoute>
+            <Update/>
+          </ProtectedRoute>
+        }
         />
       </Routes>
     </>

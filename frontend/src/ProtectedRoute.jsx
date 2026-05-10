@@ -1,5 +1,5 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { Navigate } from "react-router-dom"; 
+import { useAuth } from "./AuthContext"
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
   if (loading) return <p>Loading...</p>;
 
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" />; 
   }
 
   return children;

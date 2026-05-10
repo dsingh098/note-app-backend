@@ -10,7 +10,13 @@ import noteRouter from "./routes/notesRoutes.js";
 dotenv.config();
 
 const app = express();
-app.use(cors())
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 const PORT = process.env.PORT || 5000;
 
 // Middleware
@@ -20,6 +26,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/api/notes", noteRouter);
+
 
 // Start Server
 const startServer = async () => {

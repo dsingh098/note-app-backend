@@ -15,7 +15,7 @@ export const createNote = async (req, res) => {
     const note = await Note.create({
       title,
       content,
-      user: req.user,
+      user: req.userId,
     });
 
     return res.status(201).json({
@@ -23,6 +23,7 @@ export const createNote = async (req, res) => {
       note,
     });
   } catch (error) {
+    console.log("error", error)
     return res.status(500).json({
       message: "Server error",
     });
@@ -32,7 +33,7 @@ export const createNote = async (req, res) => {
 // ================== GET ALL NOTES ==================
 export const getAllNotes = async (req, res) => {
   try {
-    const notes = await Note.find({ user: req.user });
+    const notes = await Note.find({ user: req.userId });
 
     return res.status(200).json(notes);
   } catch (error) {

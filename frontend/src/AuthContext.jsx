@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { register, login, logout, getMe } from "../service/auth.service.js";
+import { register, login, logout, getMe } from "../service/auth.service";
 
 const AuthContext = createContext();
 
@@ -9,14 +9,9 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      setLoading(true);
-
       const data = await getMe();
-
-      setUser(data?.user || data);
-
+      setUser(data.user);
     } catch (error) {
-      console.error("Load user error:", error);
       setUser(null);
     } finally {
       setLoading(false);
@@ -27,50 +22,31 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
+
   const handleRegister = async (formData) => {
     try {
-      setLoading(true);
-
       await register(formData);
-
     } catch (error) {
-      console.error("Register error:", error);
-      throw error; 
-    } finally {
-      setLoading(false);
+      throw error;
     }
   };
 
   const handleLogin = async (formData) => {
     try {
-      setLoading(true);
-
       await login(formData);
-
-      const data = await getMe();
-      setUser(data?.user || data);
-
+      await loadUser(); 
     } catch (error) {
-      console.error("Login error:", error);
-      throw error; 
-    } finally {
-      setLoading(false);
+      throw error;
     }
   };
 
+
   const handleLogout = async () => {
     try {
-      setLoading(true);
-
       await logout();
-
       setUser(null);
-
     } catch (error) {
-      console.error("Logout error:", error);
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -82,7 +58,6 @@ export const AuthProvider = ({ children }) => {
         handleRegister,
         handleLogin,
         handleLogout,
-        loadUser, 
       }}
     >
       {children}
@@ -90,5 +65,12 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// custom hook
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
+};
