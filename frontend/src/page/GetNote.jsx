@@ -43,7 +43,7 @@ const GetNote = () => {
   };
 
   return (
-    <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-gray-100 min-h-screen">
+    <div className="p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 bg-gray-100 min-h-screen max-w-6xl mx-auto w-full">
   {notes.length === 0 ? (
     <p className="text-gray-500 text-center col-span-full">No Notes Found</p>
   ) : (
@@ -52,14 +52,14 @@ const GetNote = () => {
         key={note._id}
         className="bg-gray-50 border border-gray-200 shadow-sm p-5 rounded-md hover:shadow-md transition-shadow"
       >
-        <h2 className="text-xl font-semibold text-gray-800">{note.title}</h2>
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-800 break-words">{note.title}</h2>
         <p className="text-gray-600 mt-2">{note.description}</p>
 
-        <div className="flex gap-3 mt-4">
+        <div className="flex flex-col sm:flex-row gap-3 mt-4">
           {/* EDIT */}
           <button
             onClick={() => navigate(`/edit/${note._id}`)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md text-sm transition-colors"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:py-1.5 rounded-md text-sm transition-colors w-full sm:w-auto text-center"
           >
             Edit
           </button>
@@ -67,7 +67,7 @@ const GetNote = () => {
           {/* DELETE */}
           <button
             onClick={() => handleDelete(note._id)}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-md text-sm transition-colors"
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 sm:py-1.5 rounded-md text-sm transition-colors w-full sm:w-auto text-center"
           >
             Delete
           </button>

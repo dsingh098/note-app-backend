@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../config/token.js";
-
+  
 // ================== SIGNUP ==================
 export const signup = async (req, res) => {
   try {
@@ -37,10 +37,12 @@ export const signup = async (req, res) => {
     const token = generateToken(user._id);
 
     // Set cookie
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -89,10 +91,12 @@ export const login = async (req, res) => {
 
     const token = generateToken(user._id);
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -112,42 +116,42 @@ export const login = async (req, res) => {
   }
 };
 
-//  ge-me 
+//  ge-me
 
 export const getMe = async (req, res) => {
   try {
-    const userId = req.userId
+    const userId = req.userId;
 
     if (!userId) {
-  return res.status(401).json({
-    message: "Unauthorized - no user"
-  });
-}
-
-    const user = await User.findById(userId).select("-password")
-
-    if(!user) {
-      return res.status(404).json({
-        message:"User not found"
-      })
+      return res.status(401).json({
+        message: "Unauthorized - no user",
+      });
     }
 
-    return res.status(200).json({user})
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).json({
-      message:'Internal Server Error'
-    })
+      message: "Internal Server Error",
+    });
   }
-}
+};
 
-
-// log out 
+// log out
 
 export const logout = (req, res) => {
   try {
-    res.clearCookie("token");
-    return res.status(200).json({
-      message: "Logged out successfully",
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
   } catch (error) {
     return res.status(500).json({
