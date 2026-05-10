@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getNotes, deleteNoteById } from "../../service/note.service.js";
 import { useNavigate } from "react-router-dom";
 
+
 const GetNote = () => {
   const [notes, setNotes] = useState([]);
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const GetNote = () => {
     fetchNotes();
   }, []);
 
-  // 🔥 delete
+
   const handleDelete = async (id) => {
     try {
       await deleteNoteById(id);
